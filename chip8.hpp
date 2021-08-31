@@ -1,12 +1,60 @@
 #include <cstdint>
+#include <fstream>
+#include <chrono>
+#include <random>
 
 class Chip8
 {
     public:
+        Chip8();
+        void loadRom(char const* filename);
+
+        //IO
+        uint8_t keypad[16]; //0-F
+        uint32_t display[64 * 32];
+
+    private:
+        //Instructions
+        //There are 34 instructions
+
+        //CLS | clear dispalay
+        void OP_00E0();
+        //RET | Return from subroutine
+        void OP_00EE();
+        //JP | Jump to location nnn
+        void OP_1nnn();
+        //CALL | call subroutine at nnn
+        void OP_2nnn();
+        //SE | skip next instruction if Vx == kk
+        void OP_3xkk();
+        //SNE | skip next instrucion if Vx != kk
+        void OP_4xkk();
+        //SE | skip next instruction if Vx = Vy
+        void OP_5xy0();
+        //LD | put kk into Vx
+        void OP_6xkk();
+        //ADD | set Vx = Vx+kk
+        void OP_7xkk();
+        //LD | set Vx = Vy
+        void OP_8xy0();
+        //OR | set Vx = Vx OR Vy
+        void OP_8xy1();
+        //AND | set Vx = Vx AND Vy
+        void OP_8xy2();
+        //XOR | set Vx = Vx XOR Vy
+        void OP_8xy3();
+        //ADD | Vx = Vx + Vy set Vf = carry
+        void OP_8xy4();
+        //SUB | Vx = Vx - Vy set Vf = NOT borrow
+        void OP_8xy5();
+        //SHR | Vf is set to least-significant bit of Vx and than Vx is divided by 2
+        void OP_8xy6();
+
         //general purpose memory
         //0x0 - 0x1FF Reserved for Interpreter
         //0x200 - 0xFFF Program/Data space
         uint8_t memory[4069];
+
         //registers
         uint8_t reg[16]; //16 8-bit general purpose registers
         uint16_t index; //holds a memory address
@@ -15,14 +63,15 @@ class Chip8
         uint16_t PC; //Program Counter
         uint8_t SP; //Stack Pointer
         uint16_t stack[16];
-        //Input - Output
-        uint8_t keypad[16]; //0-F
-        uint32_t display[64 * 32];
+        
 
         uint16_t opcode; //holds current instruction consisting out of 2 bytes
 
-        //functions
-        const unsigned int START_ADDRESS = 0x200;
-        Chip8();
-        void loadRom(char const* filename);
+        //needed for random number generation
+        std::default_random_engine randGen;
+	    std::uniform_int_distribution<uint8_t> randByte;
+
+        //general
+        const unsigned int START_ADDRESS = 0x200; //here is where the program data starts
+        
 };
