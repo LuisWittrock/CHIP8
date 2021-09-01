@@ -27,7 +27,7 @@ uint8_t fontset[FONTSET_SIZE] =
 
 
 Chip8::Chip8() 
-    : randGen(std::chrono::system_clock::now().time_since_epoch().count())
+    : randGen(std::chrono::system_clock::now().time_since_epoch().count()) //generate rng seed
 {
     PC = START_ADDRESS; // set the program counter to the starting address of the program.
 
@@ -65,3 +65,59 @@ void Chip8::loadRom(char const *filename)
         delete[] buffer;
     }
 }
+
+//OPCODE implementation
+
+void Chip8::OP_00E0() //CLS
+{
+    memset(display, 0, sizeof(display));
+}
+void Chip8::OP_00EE() //RET
+{
+    SP--; 
+    PC = stack[SP];
+}
+void Chip8::OP_1nnn() //JP addr
+{
+    uint16_t address = opcode & 0x0FFFu; //extract nnn from the opcode
+    PC = address;
+}
+void Chip8::OP_2nnn() //CALL addr
+{
+    stack[SP] = PC;
+    SP++;
+    
+    uint16_t address = opcode & 0x0FFFu;
+    PC = address;
+}
+void Chip8::OP_3xkk() //SE Vx, byte
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u; //extract Vx and bitshift so the digits are in the right place
+    uint8_t value = opcode & 0x00FFu;
+
+    if(reg[Vx] == value)
+    {
+        PC += 2;
+    }
+}
+void Chip8::OP_4xkk() //SNE Vx, byte
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t value = opcode & 0x00FFu;
+
+    if(reg[Vx] != value)
+    {
+        PC += 2;
+    }
+}
+void Chip8::OP_5xy0() //SE Vx, Vy
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+    if(reg[Vx] == reg[Vy])
+    {
+        PC += 2;
+    }
+}
+

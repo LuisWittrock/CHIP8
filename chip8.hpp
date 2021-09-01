@@ -2,6 +2,7 @@
 #include <fstream>
 #include <chrono>
 #include <random>
+#include <cstring>
 
 class Chip8
 {
