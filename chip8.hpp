@@ -49,6 +49,41 @@ class Chip8
         void OP_8xy5();
         //SHR | Vf is set to least-significant bit of Vx and than Vx is divided by 2
         void OP_8xy6();
+        //SUBN | Vx = Vy - Vx, set VF not borrow
+        void OP_8xy7();
+        //SHL | Set Vx = Vx SHL 1
+        void OP_8xyE();
+        //SNE | skip next instruction if Vx != Vy
+        void OP_9xy0();
+        //LD | Set Index = nnn
+        void OP_Annn();
+        //JP | jump to location nnn + V0
+        void OP_Bnnn();
+        //RND | Set Vx = random byte AND kk
+        void OP_Cxkk();
+        //Drw | Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision.
+        void OP_Dxyn();
+        //SKP | Skip next instruction if key with value Vx is pressed.
+        void OP_Ex9E();
+        //SKNP | skip next instruction if key Vx is not pressed.
+        void OP_ExA1();
+        //LD | set Vx delay timer value
+        void OP_Fx07();
+        //LD | Wait for keypress and store in Vx
+        void OP_Fx0A();
+        //LD | set delay timer = Vx
+        void OP_Fx15();
+        //LD | set sound timer = Vx
+        void OP_Fx18();
+        //ADD | Set Index = Index + Vx
+        void OP_Fx1E();
+        //LD | Set I = location of sprite for digit Vx
+        void OP_Fx29();
+        //LD | Store BCD representation of Vx in memory locations I, I+1, I+2
+        void OP_Fx33();
+        //LD | Store Registers Vo - Vx in memory starting at location Index
+        void OP_Fx55();
+        //LD | Read registers V0 - Vx from memory starting at location Index
 
         //general purpose memory
         //0x0 - 0x1FF Reserved for Interpreter
