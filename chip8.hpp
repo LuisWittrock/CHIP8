@@ -85,6 +85,7 @@ class Chip8
         //LD | Store Registers Vo - Vx in memory starting at location Index
         void OP_Fx55();
         //LD | Read registers V0 - Vx from memory starting at location Index
+        void OP_Fx56();
 
         //general purpose memory
         //0x0 - 0x1FF Reserved for Interpreter
