@@ -120,4 +120,32 @@ void Chip8::OP_5xy0() //SE Vx, Vy
         PC += 2;
     }
 }
+void Chip8::OP_6xkk() //set Vx == kk
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t kk = (opcode & 0x00FFu);
+
+    reg[Vx] = kk;
+}
+void Chip8::OP_7xkk() //ADD Vx = Vx + kk
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t kk = opcode & 0x0F00u;
+
+    reg[Vx] += kk;
+}
+void Chip8::OP_8xy0() //LD vx, vy
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+    reg[Vx] = reg[Vy];
+}
+void Chip8::OP_8xy1() //OR Vx, Vy
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+    reg[Vx] = reg[Vx] | reg[Vy];
+}
 
