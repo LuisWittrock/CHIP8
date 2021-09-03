@@ -148,4 +148,53 @@ void Chip8::OP_8xy1() //OR Vx, Vy
 
     reg[Vx] = reg[Vx] | reg[Vy];
 }
+void Chip8::OP_8xy2() //AND Vx, Vy
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+    reg[Vx] &= reg[Vy];
+}
+void Chip8::OP_8xy3() //XOR Vx, Vy
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+    reg[Vx] ^= reg[Vy];
+}
+void Chip8::OP_8xy4() //ADD Vx, Vy
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+    uint16_t sum = reg[Vx] + reg[Vy];
+    //carry flag
+    if(sum > 255)
+    {
+        reg[0xF] = 1;
+    }
+    else
+    {
+        reg[0xF] = 0;
+    }
+
+    reg[Vx] = sum & 0xFFu; //extract lower 8bits
+}
+void Chip8::OP_8xy5() //SUB Vx, Vy
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+
+    if(reg[Vx] > reg[Vy])
+    {
+        reg[0xF] = 1;
+    }
+    else
+    {
+        reg[0xF] = 0;
+    }
+
+    reg[Vx] -= reg[Vy];
+}
+
 
