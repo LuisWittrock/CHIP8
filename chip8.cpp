@@ -196,5 +196,14 @@ void Chip8::OP_8xy5() //SUB Vx, Vy
 
     reg[Vx] -= reg[Vy];
 }
+void Chip8::OP_8xy6() //SHR Vx, SHR 1
+{
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+
+    //Least Siginificant Bit in Reg VF
+    reg[0xF] = (reg[Vx] & 0x1u);
+
+    reg[Vx] >>= 1;
+}
 
 
