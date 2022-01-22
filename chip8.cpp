@@ -206,4 +206,23 @@ void Chip8::OP_8xy6() //SHR Vx, SHR 1
     reg[Vx] >>= 1;
 }
 
+void Chip8::OP_8xy7()
+{
+
+}
+
+void Chip8::OP_8xyE()
+{
+
+}
+
+void Chip8::OP_9xy0()
+{
+
+}
+
+void Chip8::OP_Annn()
+{
+    
+}
 
